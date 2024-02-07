@@ -1,51 +1,25 @@
+const cityCoordinates = require('../coordinates.js');
+
 const hotelController = {};
 const options = {
   method: 'GET',
   headers: {
-    'X-RapidAPI-Key': '34270e732emshaf83c13e742ef6fp172053jsn29c3726f6433',
-    'X-RapidAPI-Host': 'tripadvisor16.p.rapidapi.com',
+    'X-RapidAPI-Key': '1f5aeb2710msh9a669b8d46e7a92p110609jsn6857816995e3',
+    'X-RapidAPI-Host': 'tripadvisor16.p.rapidapi.com'
   },
 };
 
-//get geo ID data
-hotelController.getGeoID = async (req, res, next) => {
-  const query = req.body.query; // paris
-  const url = `https://tripadvisor16.p.rapidapi.com/api/v1/hotels/searchLocation?query=${query}`;
+hotelController.searchHotels = (req, res, next) => {
+  const { query, checkIn, checkOut } = req.query;
+  const url = `https://tripadvisor16.p.rapidapi.com/api/v1/hotels/searchHotelsByLocation?latitude=${cityCoordinates[query].latitude}&longitude=${cityCoordinates[query].longitude}&checkIn=${checkIn}&checkOut=${checkOut}&pageNumber=1&currencyCode=USD`;
 
-  try {
-    const response = await fetch(url, options);
-    const result = await response.json();
-    console.log(result);
-    res.locals.geoID = result.data[0].geoID; //187147
-    return next();
-  } catch (error) {
-    return next({
-      log: `hotelController error: ${err}`,
-      message: 'get geo ID error',
-      status: 500,
-    });
-  }
-};
-
-//pass in geoID to search for hotels in that area
-hotelController.searchHotels = async (req, res, next) => {
-  const { checkIn, checkOut } = req.body; // 2024-01-19 date format
-  const url = `https://tripadvisor16.p.rapidapi.com/api/v1/hotels/searchHotels?geoId=${res.locals.geoID}&checkIn=${checkIn}&checkOut=${checkOut}&pageNumber=1&currencyCode=USD`;
-  // 'https://tripadvisor16.p.rapidapi.com/api/v1/hotels/searchHotels?geoId=187147&checkIn=2024-01-19&checkOut=2024-01-21&pageNumber=1&currencyCode=USD&rating=4&priceMax=300';
-
-  try {
-    const response = await fetch(url, options);
-    const result = await response.json();
-    console.log(result);
-    res.locals.hotelData = result;
-    return next();
-  } catch (error) {
-    return next({
-      log: `hotelController error: ${err}`,
-      message: 'search for hotels error',
-      status: 500,
-    });
-  }
+  fetch(url, options)
+    .then((result) => result.json())
+    .then((result) => {
+      res.locals.hotelData = result.data.data;
+      return next();
+    })
+  // .catch((err) => 'ERROR while fetching hotels: ', err);
 };
 
 module.exports = hotelController;

@@ -1,18 +1,17 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: ["./client/**/*.{js,jsx}"],
   theme: {
-    colors: {
-      primary: "#D8E2DC",
-      secondary: "#397367",
-      tertiary: "#F1EDE4",
-      highlight: "#F8C9D0"
+    extend: {
+      colors: {
+        primary: "#8AA8A1",
+      },
+      fontFamily: {
+        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+      }
     },
-    fontFamily: {
-      montserrat: ["Montserrat", "sans-serif"]
-    },
-
-    extend: {},
   },
   plugins: [],
 }

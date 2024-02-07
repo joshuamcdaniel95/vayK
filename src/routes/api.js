@@ -3,8 +3,8 @@ const router = express.Router();
 const hotelController = require('../controllers/hotelController');
 const airbnbController = require('../controllers/airbnbController');
 
-//get data from hotel api
-router.get('/hotel-info', hotelController.getGeoID, hotelController.searchHotels, (req, res) =>
+
+router.get('/hotel-info', hotelController.searchHotels, (req, res) =>
   res.status(200).json(res.locals.hotelData),
 );
 
