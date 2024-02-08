@@ -46,7 +46,6 @@ const PageContentContainer = () => {
 
     return function (...args) {
       if (shouldThrottle) {
-        console.log('Throttled!');
         return;
       }
 
