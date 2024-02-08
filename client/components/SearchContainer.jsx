@@ -35,13 +35,13 @@ const SearchContainer = ({ handleSearch, isLoading }) => {
           {/* <--- User Inputs ---> */}
           <div>
             <label htmlFor="destinationInput" className='block text-sm font-medium leading-6 text-gray-900'>Destination:</label>
-            <input value='Paris' required pattern='\b[A-Z][a-z]*\b' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 mb-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6' placeholder='Where to?' type='text' id='destinationInput' name='destinationInput' />
+            <input required pattern='\b[A-Z][a-z]*\b' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 mb-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6' placeholder='Where to?' type='text' id='destinationInput' name='destinationInput' />
           </div>
           <div>
             <label htmlFor="checkIn" className='block text-sm font-medium leading-6 text-gray-900'>Check-in:</label>
-            <input value='2024-04-28' required pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 mb-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6' placeholder='YYYY-MM-DD' type='text' id='checkIn'></input>
+            <input required pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 mb-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6' placeholder='YYYY-MM-DD' type='text' id='checkIn'></input>
             <label htmlFor="checkOut" className='block text-sm font-medium leading-6 text-gray-900'>Check-out:</label>
-            <input value='2024-05-05' required pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 mb-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6' placeholder="YYYY-MM-DD" type='text' id='checkOut'></input>
+            <input required pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 mb-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6' placeholder="YYYY-MM-DD" type='text' id='checkOut'></input>
           </div>
           <div className='flex justify-center'>
             {searchButton}
