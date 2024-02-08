@@ -7,11 +7,11 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function SortDropdown({ setSortMethod }) {
+export default function SortDropdown({ setSortMethod, sortMethod, sortCategory }) {
   return (
     <Menu as="div" className="relative inline-block text-left mx-0.5" open={false}>
       <div>
-        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+        <Menu.Button aria-label='Sort Button' className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
           Sort
           <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
         </Menu.Button>
@@ -31,8 +31,12 @@ export default function SortDropdown({ setSortMethod }) {
             <Menu.Item>
               {({ active }) => (
                 <a
+                  aria-label='Sort by price, low to high'
                   href="#"
-                  onClick={() => setSortMethod('Price: Low to High')}
+                  onClick={() => {
+                    let newSortMethod = { ...sortMethod, [sortCategory]: 'Price: Low to High' };
+                    setSortMethod(newSortMethod);
+                  }}
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm'
@@ -47,8 +51,12 @@ export default function SortDropdown({ setSortMethod }) {
             <Menu.Item>
               {({ active }) => (
                 <a
+                  aria-label='Sort by price, high to low'
                   href="#"
-                  onClick={() => setSortMethod('Price: High to Low')}
+                  onClick={() => {
+                    let newSortMethod = { ...sortMethod, [sortCategory]: 'Price: High to Low' };
+                    setSortMethod(newSortMethod);
+                  }}
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm'
@@ -63,8 +71,12 @@ export default function SortDropdown({ setSortMethod }) {
             <Menu.Item>
               {({ active }) => (
                 <a
+                  aria-label='Sort by rating'
                   href="#"
-                  onClick={() => setSortMethod('Rating')}
+                  onClick={() => {
+                    let newSortMethod = { ...sortMethod, [sortCategory]: 'Rating' };
+                    setSortMethod(newSortMethod);
+                  }}
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm'

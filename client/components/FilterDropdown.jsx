@@ -7,11 +7,11 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function FilterDropdown({ setFilters, filters }) {
+export default function FilterDropdown({ setFilters, filters, filterCategory }) {
   return (
     <Menu as="div" className="relative inline-block text-left mx-0.5" open={false}>
       <div>
-        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+        <Menu.Button aria-label='Filter Button' className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
           Filter
           <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
         </Menu.Button>
@@ -38,8 +38,10 @@ export default function FilterDropdown({ setFilters, filters }) {
               <div className="space-y-2 px-5 py-6">
                 <div className="flex items-center">
                   <input
+                    aria-label='Filter by minimum rating of 5'
                     onClick={() => {
-                      const newFilters = { ...filters, ratingMin: 5 };
+                      let key = "ratingMin" + filterCategory;
+                      const newFilters = { ...filters, [key]: 5 };
                       setFilters(newFilters);
                     }}
                     id="excellent5" type="checkbox" name="excellent5" className="h-5 w-5 rounded border-gray-300" />
@@ -49,8 +51,10 @@ export default function FilterDropdown({ setFilters, filters }) {
 
                 <div className="flex items-center">
                   <input
+                    aria-label='Filter by minimum rating of 4'
                     onClick={() => {
-                      const newFilters = { ...filters, ratingMin: 4 };
+                      let key = "ratingMin" + filterCategory;
+                      const newFilters = { ...filters, [key]: 4 };
                       setFilters(newFilters);
                     }}
                     id="great4" type="checkbox" name="tgreat4" className="h-5 w-5 rounded border-gray-300" />
@@ -60,8 +64,10 @@ export default function FilterDropdown({ setFilters, filters }) {
 
                 <div className="flex items-center">
                   <input
+                    aria-label='Filter by minimum rating of 3'
                     onClick={() => {
-                      const newFilters = { ...filters, ratingMin: 3 };
+                      let key = "ratingMin" + filterCategory;
+                      const newFilters = { ...filters, [key]: 3 };
                       setFilters(newFilters);
                     }}
                     id="good3" type="checkbox" name="good3" className="h-5 w-5 rounded border-gray-300" defaultChecked />
@@ -80,21 +86,42 @@ export default function FilterDropdown({ setFilters, filters }) {
 
               <div className="space-y-2 px-5 py-6">
                 <div className="flex items-center">
-                  <input id="300+" type="radio" name="Price" value="300+" className="h-5 w-5 rounded border-gray-300" />
+                  <input
+                    aria-label='Filter by maximum nightly rate of 100 USD'
+                    onClick={() => {
+                      let key = "priceMax" + filterCategory;
+                      const newFilters = { ...filters, [key]: 100 };
+                      setFilters(newFilters);
+                    }}
+                    id="under-100" type="radio" name="Price" value="under $100" className="h-5 w-5 rounded border-gray-300" />
 
-                  <label htmlFor="300+" className="ml-3 text-sm font-medium"> under $100 </label>
+                  <label htmlFor="under-100" className="ml-3 text-sm font-medium"> under $100 </label>
                 </div>
 
                 <div className="flex items-center">
-                  <input id="600+" type="radio" name="Price" value="600+" className="h-5 w-5 rounded border-gray-300" />
+                  <input
+                    aria-label='Filter by maximum nightly rate of 400 USD'
+                    onClick={() => {
+                      let key = "priceMax" + filterCategory;
+                      const newFilters = { ...filters, [key]: 400 };
+                      setFilters(newFilters);
+                    }}
+                    id="under-400" type="radio" name="Price" value="under $400" className="h-5 w-5 rounded border-gray-300" />
 
-                  <label htmlFor="600+" className="ml-3 text-sm font-medium"> under $400 </label>
+                  <label htmlFor="under-400" className="ml-3 text-sm font-medium"> under $400 </label>
                 </div>
 
                 <div className="flex items-center">
-                  <input id="1500+" type="radio" name="Price" value="1500+" className="h-5 w-5 rounded border-gray-300" />
+                  <input
+                    aria-label='Filter by maximum nightly rate of 700 USD'
+                    onClick={() => {
+                      let key = "priceMax" + filterCategory;
+                      const newFilters = { ...filters, [key]: 700 };
+                      setFilters(newFilters);
+                    }}
+                    id="under-700" type="radio" name="Price" value="under $700" className="h-5 w-5 rounded border-gray-300" />
 
-                  <label htmlFor="1500+" className="ml-3 text-sm font-medium"> under $700 </label>
+                  <label htmlFor="under-700" className="ml-3 text-sm font-medium"> under $700 </label>
                 </div>
 
                 <div className="pt-2">
@@ -111,58 +138,6 @@ export default function FilterDropdown({ setFilters, filters }) {
             </div>
           </div>
         </details>
-
-        {/* <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <div className="flex items-center gap-x-3">
-                  <input
-                    id="push-everything"
-                    name="push-notifications"
-                    type="radio"
-                    className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <label htmlFor="push-everything" className="block text-sm font-medium leading-6 text-gray-900">
-                    Everything
-                  </label>
-                </div>
-              )}
-            </Menu.Item>
-          </div>
-          <div className="py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  onClick={() => setSortMethod('Price: High to Low')}
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
-                  )}
-                >
-                  Price: High to Low
-                </a>
-              )}
-            </Menu.Item>
-          </div>
-          <div className="py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  onClick={() => setSortMethod('Rating')}
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
-                  )}
-                >
-                  Rating
-                </a>
-              )}
-            </Menu.Item>
-          </div>
-        </Menu.Items> */}
       </Transition >
     </Menu >
   )
