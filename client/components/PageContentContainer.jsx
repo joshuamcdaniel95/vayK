@@ -6,6 +6,7 @@ import NavBar from './NavBar.jsx';
 import Footer from './Footer.jsx';
 
 const PageContentContainer = () => {
+
   const [hotelsData, setHotelsData] = useState([]);
   const [rentalsData, setRentalsData] = useState([]);
   const [hotelsList, setHotelsList] = useState([]);
@@ -23,8 +24,7 @@ const PageContentContainer = () => {
 
   useEffect(() => {
     if (searchValues) {
-      hotelFetch();
-      rentalFetch();
+      fetchHotelsAndRentals();
     }
   }, [searchValues]);
 
@@ -41,23 +41,28 @@ const PageContentContainer = () => {
   }, [rentalsData, sortMethod.rentalsSort, filters.priceMaxRentals, filters.ratingMinRentals]);
 
   const controller = new AbortController();
-  const throttle = (func, delay) => {
-    let lastCall = 0;
+  const throttle = (func, wait) => {
+    let shouldThrottle = false;
 
     return function (...args) {
-      const now = Date.now();
-      if (now - lastCall >= delay) {
-        func(...args);
-        lastCall = now;
+      if (shouldThrottle) {
+        console.log('Throttled!');
+        return;
       }
-      else console.log('throttled!')
-    };
+
+      shouldThrottle = true;
+
+      setTimeout(() => {
+        shouldThrottle = false;
+      }, wait);
+
+      func.apply(this, args);
+    }
   };
+
 
   function handleSearch() {
     if (isLoading) {
-      controller.abort();
-      console.log('Aborted search.')
       return;
     }
     setIsLoading(true);
@@ -65,39 +70,32 @@ const PageContentContainer = () => {
     const checkIn = document.getElementById('checkIn').value;
     const checkOut = document.getElementById('checkOut').value;
     setSearchValues({ destinationInput, checkIn, checkOut });
-  }
+  };
 
-  function hotelFetch() {
-    console.log('Running hotelFetch....')
-    fetch(`http://localhost:3000/api/hotel-info?query=${searchValues.destinationInput}&checkIn=${searchValues.checkIn}&checkOut=${searchValues.checkOut}`, {
-      method: 'GET',
-      signal: controller.signal,
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setHotelsData(response);
+  function fetchHotelsAndRentals() {
+    Promise.all([
+      fetch(`http://localhost:3000/api/hotel-info?query=${searchValues.destinationInput}&checkIn=${searchValues.checkIn}&checkOut=${searchValues.checkOut}`),
+      fetch(`http://localhost:3000/api/airbnb-info?query=${searchValues.destinationInput}&checkIn=${searchValues.checkIn}&checkOut=${searchValues.checkOut}`)
+    ])
+      .then(([hotelResponse, rentalResponse]) => {
+        Promise.all([
+          hotelResponse.json(),
+          rentalResponse.json()
+        ])
+          .then(([hotelsJSON, rentalsJSON]) => {
+            setHotelsData(hotelsJSON);
+            setRentalsData(rentalsJSON);
+          })
+          .catch((err) => console.log('ERROR while setting Hotels and Rentals Data: ', err))
       })
-      .catch((err) => console.log('ERROR while searching hotels: ', err))
-  }
-
-  function rentalFetch() {
-    console.log('Running rentalFetch....')
-    fetch(`http://localhost:3000/api/airbnb-info?query=${searchValues.destinationInput}&checkIn=${searchValues.checkIn}&checkOut=${searchValues.checkOut}`, {
-      method: 'GET'
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setRentalsData(response);
-      })
-      .catch((err) => console.log('ERROR while searching rentals: ', err))
+      .catch((err) => console.log('ERROR while parsing Hotel and Rentals JSON: ', err))
   }
 
   function createHotelsList() {
-    console.log('Creating Hotels List...');
-    const hotelsDataCopy = [...hotelsData];
-    console.log('hotel data shape: ', hotelsDataCopy);
 
-    // Handle API inconsistency
+    const hotelsDataCopy = [...hotelsData];
+
+    // Handle API Inconsistency
     for (const hotel of hotelsDataCopy) {
       if (hotel.priceForDisplay === null) {
         setHotelsList([<div className='text-sm text-gray-700 p-2'>We're sorry! Hotel data not available right now.</div>])
@@ -105,6 +103,7 @@ const PageContentContainer = () => {
       }
     }
 
+    //Hotel Sorts
     switch (sortMethod.hotelsSort) {
       case 'Rating':
         hotelsDataCopy.sort((a, b) => b.bubbleRating.rating - a.bubbleRating.rating)
@@ -117,33 +116,38 @@ const PageContentContainer = () => {
         break;
     }
 
+    //Hotel Filters
     const filteredHotelsData = hotelsDataCopy
       .filter((hotel) => Number(hotel.priceForDisplay.slice(1)) < filters.priceMaxHotels)
       .filter((hotel) => hotel.bubbleRating.rating >= filters.ratingMinHotels);
 
+    // Each Hotel Listing
     const hotels = filteredHotelsData.map((hotel, i) => {
 
+      // Images for Carousel
       const imgCarousel = hotel.cardPhotos.map((image) => {
         const hotelPhotoURL = image.sizes.urlTemplate.replace('{width}', 700).replace('{height}', 700);
         return (
           <div className="carousel-item">
             <a href={hotelPhotoURL} target="_blank" rel="noopener noreferrer">
-              <img src={hotelPhotoURL} alt="Hotel Photo" className="rounded-box h-24" />
+              <img loading="lazy" src={hotelPhotoURL} alt="Hotel Photo" className="rounded-box h-28 w-44 object-cover border-gray-400 border shadow-md" />
             </a>
           </div>
         )
       })
+
       const hotelName = hotel.title.slice(3);
+
       return (
         <div key={i} className="flex max-w-lg border-t border-gray-400 p-2 m-1">
           <div className="carousel carousel-center max-w-md p-1 space-x-4 bg-neutral rounded-box ">
             {imgCarousel}
           </div>
           <div className="flex flex-col mx-2 justify-center text-sm">
-            <a className="mx-2 mb-1 min-w-60" href={hotel.commerceInfo.externalUrl} target="_blank" rel="noopener noreferrer">{hotelName}</a>
+            <a className="mx-2 mb-2 min-w-60 text-gray-900" href={hotel.commerceInfo.externalUrl} target="_blank" rel="noopener noreferrer">{hotelName}</a>
             <div className="flex text-xs text-gray-600 ">
-              <p>{hotel.priceForDisplay}/night for 1 bedroom</p>
-              <p>Rating: {hotel.bubbleRating.rating}/5</p>
+              <p className='mx-2'>{hotel.priceForDisplay}/night for 1 bedroom</p>
+              <p className='mx-2'>Rating: {hotel.bubbleRating.rating}/5</p>
             </div>
           </div>
         </div>
@@ -155,9 +159,10 @@ const PageContentContainer = () => {
   }
 
   function createRentalsList() {
-    console.log('Creating Rentals List...');
+
     const rentalsDataCopy = [...rentalsData];
 
+    // Rental Sort
     switch (sortMethod.rentalsSort) {
       case 'Rating':
         rentalsDataCopy.sort((a, b) => b.rating - a.rating)
@@ -170,30 +175,32 @@ const PageContentContainer = () => {
         break;
     }
 
+    //Rental Filters
     const filteredRentalsData = rentalsDataCopy
       .filter((rental) => Number(rental.price.rate) < filters.priceMaxRentals)
       .filter((rental) => rental.rating >= filters.ratingMinRentals);
 
-    console.log('Made it past rentals filtering');
+    // Each Rental Listing
     const rentals = filteredRentalsData.map((rental, i) => {
-      // Array of carousel items
+
+      // Images for Carousel
       const imgCarousel = rental.images.map((image, imgIndex) => {
         return (
           <div className="carousel-item">
             <a href={rental.images[imgIndex]} target="_blank" rel="noopener noreferrer">
-              <img src={rental.images[imgIndex]} alt="Rental Photo" className="rounded-box h-24" />
+              <img loading="lazy" src={rental.images[imgIndex]} alt="Rental Photo" className="rounded-box h-28 w-44 object-cover border-gray-400 border shadow-md" />
             </a>
           </div>
         )
       })
-      // One element in rentals array
+
       return (
         <div key={i} className="flex max-w-lg border-t border-gray-400 p-2 m-1">
           <div className="carousel carousel-center max-w-md p-1 space-x-4 bg-neutral rounded-box ">
             {imgCarousel}
           </div>
           <div className="flex flex-col mx-2 justify-center text-sm">
-            <a className="mx-2 mb-1 min-w-60" href={rental.url} target="_blank" rel="noopener noreferrer">{rental.name}</a>
+            <a className="mx-2 mb-2 min-w-60 text-gray-900" href={rental.url} target="_blank" rel="noopener noreferrer">{rental.name}</a>
             <div className="flex text-xs text-gray-600 ">
               <p className="mx-2">${rental.price.rate}/night</p>
               <p className="mx-2">{rental.bedrooms} bed</p>
@@ -204,11 +211,12 @@ const PageContentContainer = () => {
         </div>
       )
     })
-    console.log('Made it past rentals map');
+
     setRentalsList(rentals);
     setIsLoading(false);
   }
 
+  //Component Return
   return (
     <div className='h-screen flex flex-col justify-between'>
       <NavBar />

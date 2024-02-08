@@ -27,15 +27,20 @@ export default function FilterDropdown({ setFilters, filters, filterCategory }) 
         leaveTo="transform opacity-0 scale-95"
       >
 
+        {/* <--- When Dropdown Menu Open ---> */}
+
         <details open className="absolute right-0 z-10 mt-2 w-80 origin-top-right overflow-hidden rounded-lg bg-gray-100 border border-gray-200 open:shadow-lg text-gray-700">
           <summary className="cursor-pointer select-none items-center justify-between bg-gray-100 px-5 py-3 lg:hidden hidden">
           </summary>
 
           <form action="" className="flex w-full border-t border-gray-200">
             <fieldset className="w-full">
-              <legend className="block w-full bg-gray-50 px-5 py-3 text-xs font-medium">Rating</legend>
 
+              {/* <--- Sort Menu ---> */}
+              <legend className="block w-full bg-gray-50 px-5 py-3 text-xs font-medium">Rating</legend>
               <div className="space-y-2 px-5 py-6">
+
+                {/* <--- Sort Minimum Rating: 5 ---> */}
                 <div className="flex items-center">
                   <input
                     aria-label='Filter by minimum rating of 5'
@@ -49,6 +54,7 @@ export default function FilterDropdown({ setFilters, filters, filterCategory }) 
                   <label htmlFor="excellent5" className="ml-3 text-sm font-medium"> Excellent (5)</label>
                 </div>
 
+                {/* <--- Sort Minimum Rating: 4 ---> */}
                 <div className="flex items-center">
                   <input
                     aria-label='Filter by minimum rating of 4'
@@ -62,6 +68,7 @@ export default function FilterDropdown({ setFilters, filters, filterCategory }) 
                   <label htmlFor="great4" className="ml-3 text-sm font-medium"> Great (4+)</label>
                 </div>
 
+                {/* <--- Sort Minimum Rating: 3 ---> */}
                 <div className="flex items-center">
                   <input
                     aria-label='Filter by minimum rating of 3'
@@ -82,9 +89,13 @@ export default function FilterDropdown({ setFilters, filters, filterCategory }) 
             </fieldset>
 
             <fieldset className="w-full">
+
+              {/* <--- Filter Menu ---> */}
               <legend className="block w-full bg-gray-50 px-5 py-3 text-xs font-medium">Price /night</legend>
 
               <div className="space-y-2 px-5 py-6">
+
+                {/* <--- Filter Max Price: 100 ---> */}
                 <div className="flex items-center">
                   <input
                     aria-label='Filter by maximum nightly rate of 100 USD'
@@ -98,6 +109,7 @@ export default function FilterDropdown({ setFilters, filters, filterCategory }) 
                   <label htmlFor="under-100" className="ml-3 text-sm font-medium"> under $100 </label>
                 </div>
 
+                {/* <--- Filter Max Price: 400 ---> */}
                 <div className="flex items-center">
                   <input
                     aria-label='Filter by maximum nightly rate of 400 USD'
@@ -111,6 +123,7 @@ export default function FilterDropdown({ setFilters, filters, filterCategory }) 
                   <label htmlFor="under-400" className="ml-3 text-sm font-medium"> under $400 </label>
                 </div>
 
+                {/* <--- Filter Max Price: 700 ---> */}
                 <div className="flex items-center">
                   <input
                     aria-label='Filter by maximum nightly rate of 700 USD'
@@ -124,6 +137,7 @@ export default function FilterDropdown({ setFilters, filters, filterCategory }) 
                   <label htmlFor="under-700" className="ml-3 text-sm font-medium"> under $700 </label>
                 </div>
 
+                {/* <--- Reset Filters ---> */}
                 <div className="pt-2">
                   <button type="button" className="text-xs text-gray-500 underline">Reset Price /night</button>
                 </div>

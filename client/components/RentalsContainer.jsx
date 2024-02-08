@@ -4,6 +4,7 @@ import FilterDropdown from "./FilterDropdown";
 
 const RentalsContainer = ({ setFilters, setSortMethod, rentalsList, hotelsList, filters, sortMethod }) => {
 
+  // Before search, on page load
   if (!rentalsList.length || !hotelsList.length) return (
     <div>
       <div className="flex -my-2">
@@ -17,11 +18,13 @@ const RentalsContainer = ({ setFilters, setSortMethod, rentalsList, hotelsList, 
       <h2 className="text-3xl">Your Way.</h2>
     </div >
   )
+
+  // After search
   else if (rentalsList.length && hotelsList.length) {
     return (
-      <div className="flex-col m-2 max-h-lvh rounded-box border-4 border-double border-primary border-opacity-80 shadow-lg">
+      <div className="flex-col m-2 max-h-lvh rounded-box bg-white border-4 border-double border-primary border-opacity-80 shadow-lg">
         <div className="flex justify-between items-center m-2 p-2">
-          <h1 className="m-2 text-2xl">Rentals</h1>
+          <h1 className="m-2 text-2xl text-gray-900">Rentals</h1>
           <div>
             <SortDropdown setSortMethod={setSortMethod} sortMethod={sortMethod} sortCategory={"rentalsSort"} />
             <FilterDropdown setFilters={setFilters} filters={filters} filterCategory={"Rentals"} />

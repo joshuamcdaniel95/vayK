@@ -1,8 +1,6 @@
 import React from 'react';
-import { useState } from 'react';
 
-
-const SearchContainer = ({ handleSearch, isLoading, rentalsList, hotelsList }) => {
+const SearchContainer = ({ handleSearch, isLoading }) => {
 
   let searchButton;
 
@@ -20,32 +18,30 @@ const SearchContainer = ({ handleSearch, isLoading, rentalsList, hotelsList }) =
   }
   else
     searchButton =
-      // <div>
-      //   <button aria-label='Search Button' onClick={handleSearch} className='inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white m-1 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'>Search</button>
-      // </div>
       <input type='submit' value="Search" className='inline-flex justify-center gap-x-1.5 rounded-md bg-white m-1 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 hover:cursor-pointer'>
-        {/* <button aria-label='Search Button' onClick={handleSearch} className='inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white m-1 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'>Search</button> */}
       </input>
 
   return (
     <>
       <div className='flex flex-col items-center rounded-md bg-white shadow-lg p-2 '>
-        <div className='text-xl p-1 m-2'>
+        <h3 className='text-xl p-1 m-2'>
           Find the <span className='text-primary'>perfect</span> stay.
-        </div>
+        </h3>
         <form id='search-form' onSubmit={(e) => {
           e.preventDefault();
           handleSearch();
         }}>
+
+          {/* <--- User Inputs ---> */}
           <div>
             <label htmlFor="destinationInput" className='block text-sm font-medium leading-6 text-gray-900'>Destination:</label>
-            <input required pattern='\b[A-Z][a-z]*\b' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 mb-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6' placeholder='Where to?' type='text' id='destinationInput' name='destinationInput' />
+            <input value='Paris' required pattern='\b[A-Z][a-z]*\b' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 mb-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6' placeholder='Where to?' type='text' id='destinationInput' name='destinationInput' />
           </div>
           <div>
             <label htmlFor="checkIn" className='block text-sm font-medium leading-6 text-gray-900'>Check-in:</label>
-            <input required pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 mb-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6' placeholder='YYYY-MM-DD' type='text' id='checkIn'></input>
+            <input value='2024-04-28' required pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 mb-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6' placeholder='YYYY-MM-DD' type='text' id='checkIn'></input>
             <label htmlFor="checkOut" className='block text-sm font-medium leading-6 text-gray-900'>Check-out:</label>
-            <input required pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 mb-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6' placeholder="YYYY-MM-DD" type='text' id='checkOut'></input>
+            <input value='2024-05-05' required pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 mb-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6' placeholder="YYYY-MM-DD" type='text' id='checkOut'></input>
           </div>
           <div className='flex justify-center'>
             {searchButton}
