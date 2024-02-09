@@ -3,26 +3,26 @@ Search for airbnbs and hotels by city, and compare listings side by side.
 
 ## Current Functionality
 
-# Search
+### Search
 Enter a destination (_Capitalize city name_). Currently accepts 50 cities, these can be found in `coordinates.js`.
 
-# Sort
+### Sort
 Sort Rentals and Hotels independently, by Rating, and Prices. Defaults to sorting by Rating.
 
-# Filter
+### Filter
 Filter Rentals and Hotels independently, by Maximum Price/night and Minimum Rating. Defaults to Minimum Rating of 3.
 
 ## Non-Functional Components
 
-# Nav-bar
+### Nav-bar
 Currently presentational only.
 
-# User Login Icon
+### User Login Icon
 Currently presentational only.
 
 ## Known Issues
 
-# Hotel List Behavior
+### Hotel List Behavior
 On first attempt of a specific search, hotels list will not populate correctly. Run the search once more to fix. This is an issue with the TripAdvisor API, will be addressed soon.
 
 ## Roadmap
