@@ -1,4 +1,4 @@
-# Welcome to vayK your way!
+# Welcome to vayK
 Search for airbnbs and hotels by city, and compare listings side by side.
 
 Run `npm run dev` to start dev server (_localhost:5500_).
